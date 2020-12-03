@@ -1,0 +1,197 @@
+﻿@model GoF.Lib.MvcWebUI.Models.AdministratorAndSocialMediaViewModel
+@{
+    ViewData["Title"] = "AdministratorEdit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<form asp-action="AdministratorEdit" asp-controller="Admin" method="post">
+    <div class="col-12 mb-30">
+        <div class="box">
+            <div class="box-head">
+                <h3 class="title">Admin Düzenle</h3>
+            </div>
+            <div class="box-body">
+                <div class="row mbn-20">
+                    <div class="row mbn-15">
+                        <input type="hidden" asp-for="@Model.AdminSocialMedias.Admin.Id" id="@Model.AdminSocialMedias.Admin.Id" />
+                        <div class="col-4 mb-15">
+                            <label asp-for="@Model.AdminSocialMedias.Admin.FirstName"></label>
+                            <input type="text" class="form-control" placeholder="Ad" asp-for="@Model.AdminSocialMedias.Admin.FirstName">
+                        </div>
+                        <div class="col-4 mb-15">
+                            <label asp-for="@Model.AdminSocialMedias.Admin.LastName"></label>
+                            <input type="text" class="form-control" placeholder="Soyad" asp-for="@Model.AdminSocialMedias.Admin.LastName">
+                        </div>
+                        <div class="col-4 mb-15">
+                            <label asp-for="@Model.AdminSocialMedias.Admin.UserName"></label>
+                            <input type="text" class="form-control" placeholder="Kullanıcı Adı" asp-for="@Model.AdminSocialMedias.Admin.UserName">
+                        </div>
+                        <div class="col-4 mb-15">
+                            <label asp-for="@Model.AdminSocialMedias.Admin.Password"></label>
+                            <input type="text" class="form-control" placeholder="Parola" asp-for="@Model.AdminSocialMedias.Admin.Password">
+                        </div>
+                        <div class="col-4 mb-15">
+                            <label asp-for="@Model.AdminSocialMedias.Admin.Email"></label>
+                            <input type="text" class="form-control" placeholder="Email" asp-for="@Model.AdminSocialMedias.Admin.Email">
+                        </div>
+                        <br />
+                        <div class="form-group col-12 m-2 p-4">
+                            <label for="@Model.AdminSocialMedias.Admin.About">Hakkında</label>
+                            <textarea style="height:500px; width:100%;background-color:#202334;color:white;border-color:black" asp-for="@Model.AdminSocialMedias.Admin.About"></textarea>
+                        </div>
+                        <div class="col-12 mb-15 p-5">
+                            <div class="form-group">
+                                <label for="linkInput" class="col-form-label">Link:</label>
+                                <input type="text" class="form-control" id="linkInput">
+                                <label for="logoInput" class="col-form-label">Logo Class:</label>
+                                <input type="text" class="form-control" id="logoInput">
+                            </div>
+
+                            <div class="col-12 mt-5 float-left">
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-facebook-f" class="fa fa-facebook"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-linkedin-in" class="fa fa-linkedin"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-google-plus-g" class="fa fa-google-plus"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-twitter" class="fa fa-twitter"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-vk" class="fa fa-vk"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-instagram" class="fa fa-instagram"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-github-alt" class="fa fa-github-alt"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-reddit-alien" class="fa fa-reddit"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-snapchat-ghost" class="fa fa-snapchat"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-skype" class="fa fa-skype"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-stack-overflow" class="fa fa-stack-overflow"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-tumblr" class="fa fa-tumblr"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-twitch" class="fa fa-twitch"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-youtube" class="fa fa-youtube"></i></a>
+                                <a role="button" class="btn btn-danger iconButton m-1" style="color:white"><i id="fab fa-telegram-plane" class="fa fa-telegram"></i></a>
+                                <a role="button" class="btn btn-outline-success float-right mr-50 ekleBtn">Yeni Link Ekle&nbsp; <i class="fa fa-plus"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-25 mainsocial">
+                            @foreach (var item in Model.AdminSocialMedias.SocialMedias)
+                            {
+
+                                <div class="form-group p-5 linkDiv" id="@item.Id">
+                                    <label asp-for="@item.Link"></label>
+                                    <input type="text" class="form-control" asp-for="@item.Link">
+                                    <label asp-for="@item.LogoClass"></label>
+                                    <input type="text" class="form-control" asp-for="@item.LogoClass">
+                                    <a class="btn btn-danger mt-2 float-right silBtn" style="color:white">
+                                        Sil
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-12 mb-15 ">
+                            <button class="btn btn-success btn-lg float-right mt-3" type="submit">
+                                Kaydet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+</form>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sosyal Medya Ekleme</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary " id="ekleBtn">Ekle</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section AdminEditScripts
+{
+    <script>
+        $(document).ready(function () {
+            // Fill modal with content from link href
+            $("body").delegate(".silBtn", "click", function () {
+                var adminId = $('input[type=hidden]').val();
+                var socialMediaId = $(this).parent().attr('id');
+                var div = $(this).parent();
+                console.log("okay");
+                $.ajax({
+                    type: "GET",
+                    url: "/Admin/AdminSocialMediaDelete?adminId=" + adminId + "&socialmediaId=" + socialMediaId,
+                    dataType: 'json',
+                    success: function (data) {
+                        div.fadeOut(250, function () {
+                        });
+                    }
+                });
+            });
+        })
+    </script>
+    <script>
+        $(document).ready(
+            function () {
+                $('.ekleBtn').on("click", function (e) {
+                    var adminId = $('input[type=hidden]').val();
+                    var link = $("#linkInput").val();
+                    var logo = $("#logoInput").val();
+                    var main = $(".mainsocial");
+                    var id = 0;
+                    var html = '';
+                    Process();
+                    console.log(link);
+                    console.log(logo);
+                    function Process() {
+                        $.getJSON("/Admin/AddSocialMedia?link=" + link + "&logo=" + logo + "&adminId=" + adminId, function (data) {
+
+                            $.getJSON("/Admin/GetLastId", function (data)
+                            {
+                                html += "<div class='form-group p-5 linkDiv' id='" + data + "'>";
+                                html += "<label for='item_Link'>Link</label>";
+                                html += "<input type='text' class='form-control' name='item.Link' id='item_Link' value='" + link + "'>";
+                                html += "<label for='item_LogoClass'>İkon</label>";
+                                html += "<input type='text' class='form-control' name='item.LogoClass' id='item_LogoClass' value='" + logo + "'>";
+                                html += "<a class='btn btn-danger mt-2 float-right silBtn' style='color:white'>Sil<i class='fa fa-trash'></i></a>";
+                                    @*
+                                     <div class="form-group p-5 linkDiv" id="@item.Id">
+                                        <label asp-for="@item.Link"></label>
+                                         <input type="text" class="form-control" asp-for="@item.Link">
+                                         <label asp-for="@item.LogoClass"></label>
+                                         <input type="text" class="form-control" asp-for="@item.LogoClass">
+                                            <a class="btn btn-danger mt-2 float-right silBtn" style="color:white">
+                                              Sil
+                                             <i class="fa fa-trash"></i>
+                                             </a>
+                                      </div>
+                                    *@
+                                main.append(html);
+                                console.log(data);
+
+                                @*
+                                "<div class='form-group p-5 linkDiv' id=" + data + "><label for=item_Link>Link</label><input type='text' class='form-control' name='item.Link' id='item_Link'  value=" + link + "><label for='item_LogoClass'>İkon</label><input type='text' name='item.LogoClass' id='item_LogoClass' class='form-control'  value=" + logo + ">  <a class='btn btn-danger mt-2 float-right silBtn' style='color: white'>  Sil <i class='fa fa-trash'></i> </a></div> ";
+                                *@
+                            });
+                        });
+                    }
+                })
+            }
+        )
+
+    </script>
+    <script>
+        $(".iconButton").each(function (index) {
+            $(this).on("click", function () {
+
+                var icon = $(this).children().attr('id');
+                var input = $('#logoInput');
+                input.val(icon);
+
+            });
+        });
+    </script>  
+}

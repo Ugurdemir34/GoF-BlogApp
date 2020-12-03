@@ -1,0 +1,14 @@
+﻿@model IEnumerable<GoF.Lib.Entities.Concrete.Comment>
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+    <div  class="ml-5 mt-2 mb-2">
+        
+            <img class="myimage" src="~/img/profile.png" style="width:30px;height:30px;" /><p class="ml-2" style="max-width:150px;">@item.CommentDescription</p>
+      
+    </div>
+    <br />
+}

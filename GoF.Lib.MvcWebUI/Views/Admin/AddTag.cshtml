@@ -1,0 +1,35 @@
+﻿@model GoF.Lib.MvcWebUI.Models.AddTagViewModel
+@{
+    ViewData["Title"] = "AddTag";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-action="AddTag" asp-controller="Admin" method="post">
+    <div class="col-12 mb-30">
+        <div class="box">
+            <div class="box-head">
+                <h3 class="title">Yeni Tag Ekle</h3>
+            </div>
+            <div class="box-body">
+                <div class="row mbn-20">
+                    <div class="row mbn-15">
+
+                        <div class="col-8 mb-15">
+
+                            <label asp-for="@Model.TagName"></label>
+                            <input type="text" class="form-control" asp-for="@Model.TagName">
+                        </div>
+
+                        <div class="col-4 mb-15">
+                            <label>&nbsp</label>
+                            <button class="btn btn-success" type="submit">
+                                Kaydet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

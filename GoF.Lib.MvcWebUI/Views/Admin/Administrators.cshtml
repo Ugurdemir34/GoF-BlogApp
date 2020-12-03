@@ -1,0 +1,96 @@
+﻿@model GoF.Lib.MvcWebUI.Models.AdministratorListViewModel
+@{
+    ViewData["Title"] = "Administrators";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<table class="table table-bordered data-table data-table-default" id="myTable">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Kullanıcı Adı</th>
+            <th>Adı</th>
+            <th>Soyadı</th>
+            <th>Hakkında</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.Admins)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Username</td>
+                <td>@item.FirstName</td>
+                <td>@item.LastName</td>
+                <td>
+                   
+                     @{ 
+                         var about = item.About.Length > 50 ? @item.About.Substring(0, 50) + "..." : @item.About;
+                     }
+                    @about
+                     
+                </td>
+
+                <td>
+                    <button role="button" class="btn button-lg btn-outline-danger" id="@item.Id"><i class="fa fa-trash-o"></i><span class="sr-only"></span>&nbsp;Sil</button>
+                    <a role="button" asp-action="AdministratorEdit" asp-controller="Admin" asp-route-adminId="@item.Id" class="btn button-lg btn-outline-warning " id="@item.Id"><i class="fa fa-pencil-square-o"></i><span class="sr-only"></span>&nbsp;Düzenle</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Id</th>
+            <th>Kullanıcı Adı</th>
+            <th>Adı</th>
+            <th>Soyadı</th>
+            <th>Hakkında</th>
+            <th></th>
+        </tr>
+    </tfoot>
+</table>
+
+
+@section AdminScripts
+{
+    <script>
+        $(document).ready(function () {
+            // Fill modal with content from link href
+            $("#myTable tbody").on("click",'.btn-outline-danger', function (e) {
+
+
+                var id = this.id;
+                console.log(id);
+                var data_table = $('#myTable tbody');
+                var row = $(this).parent().parent();
+
+                swal({
+                    title: "Silmek İstediğinize Emin Misiniz ?",
+                    text: "Bu işlem geri alınamaz !",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                type: "GET",
+                                url: "/Admin/AdministratorDelete?adminId=" + id,
+                                dataType: 'json',
+                                success: function (data) {
+                                    swal("İşlem Başarılı !", "Kayıt Başarıyla Silindi", "success");
+                                    row.fadeOut(1000, function () {
+                                    }); 
+                                }
+                            });
+                        } else {
+                            swal("Bu veri korundu !");
+                        }
+                    });
+            });
+        })
+    </script>
+}

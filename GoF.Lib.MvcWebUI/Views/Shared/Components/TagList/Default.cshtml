@@ -1,0 +1,26 @@
+﻿@model GoF.Lib.MvcWebUI.Models.TagListViewModel
+@{
+    Layout = null;
+}
+
+<div class="card">
+    <div class="card-header">
+        <p style="text-align:center">ETİKETLER</p>
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item  justify-content-between align-items-center mt-2">
+            @foreach (var item in Model.Tags)
+            {
+                <a asp-action="Index" asp-controller="Blog" asp-route-tagName="@item.TagName">
+
+
+                    #@item.TagName&nbsp;&nbsp;
+                    @*<span class="badge badge-warning">@item.Value</span>*@
+
+                </a>
+            }
+        </li>
+
+
+    </ul>
+</div>

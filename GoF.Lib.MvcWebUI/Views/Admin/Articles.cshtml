@@ -1,0 +1,103 @@
+﻿@model GoF.Lib.MvcWebUI.Models.ArticleListViewModel
+@{
+    ViewData["Title"] = "Articles";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<table class="table table-bordered data-table data-table-default" id="myTable">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Başlık</th>
+            <th>Kategori</th>
+            <th><i class="fa fa-eye"></i></th>
+            <th>Yayım Tarihi</th>
+            <th>Yazar</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.Articles)
+        {
+            <tr>
+                @{ 
+                    string title = item.ArticleTitle.Length > 20 ? item.ArticleTitle.Substring(0, 20) + "..." : item.ArticleTitle;
+                }
+                <td>@item.ArticleId</td>
+                <td>@title</td>
+                <td>@item.CategoryName</td>
+                <td>@item.Views</td>
+                <td>@item.PublishDate.ToShortDateString()</td>
+                <td>@item.AdminName</td>
+                <td>
+                    <button role="button" class="btn button-lg btn-outline-danger" id="@item.ArticleId"><i class="fa fa-trash-o"></i><span class="sr-only"></span>&nbsp;Sil</button>             
+                    <a role="button" asp-action="ArticleEdit" asp-controller="Admin" asp-route-articleId="@item.ArticleId" class="btn button-lg btn-outline-warning " id="@item.ArticleId"><i class="fa fa-pencil-square-o"></i><span class="sr-only"></span>&nbsp;Düzenle</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th>Id</th>
+            <th>Başlık</th>
+            <th>Kategori</th>
+            <th><i class="fa fa-eye"></i></th>
+            <th>Yayım Tarihi</th>
+            <th>Yazar</th>
+            <th></th>
+        </tr>
+    </tfoot>
+</table>
+
+
+@section ArticleScripts
+{
+    <script>
+        $(document).ready(function () {
+            // Fill modal with content from link href
+            $("#myTable tbody").on("click",'.btn-outline-danger', function (e) {
+
+
+                var id = this.id;
+                console.log(id);
+                var data_table = $('#myTable tbody');
+                var row = $(this).parent().parent();
+
+                swal({
+                    title: "Silmek İstediğinize Emin Misiniz ?",
+                    text: "Bu işlem geri alınamaz !",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                type: "GET",
+                                url: "/Admin/ArticleDelete?articleId=" + id,
+                                dataType: 'json',
+                                success: function (data) {
+                                    swal("İşlem Başarılı !", "Kayıt Başarıyla Silindi", "success");
+                                    row.fadeOut(1000, function () {
+                                    });
+
+
+
+                                }
+                            });
+                        } else {
+                            swal("Bu veri korundu !");
+                        }
+                    });
+
+
+
+
+            });
+
+        })
+    </script>
+ 
+}

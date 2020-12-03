@@ -1,0 +1,223 @@
+﻿@model GoF.Lib.MvcWebUI.Models.ArticleCategoryTagAdminCommentViewModel
+@{
+    ViewData["Title"] = "BlogDetail";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+<div class="col-9">
+
+    <h1>@Model.ArticleAll.Article.ArticleTitle</h1>
+    <hr />
+    <p>@Html.Raw(Model.ArticleAll.Article.ArticleContent)</p><hr />
+    <div>
+        Kategori <a asp-action="Index" asp-controller="Blog" asp-route-categoryName="@Model.ArticleAll.Article.Category.Name"><p class="text-muted">@Model.ArticleAll.Article.Category.Name</p></a><br />
+        Tags<br />
+        @for (int i = 0; i < Model.ArticleAll.ArticleTags.Count; i++)
+        {
+            <a asp-action="Index" asp-controller="Blog" asp-route-tagName="@Model.ArticleAll.ArticleTags[i].TagName">
+                #@Model.ArticleAll.ArticleTags[i].TagName &nbsp;
+            </a>
+        }
+        <br /><br />
+        <div class="row mb-4 wow fadeIn">
+            <div class="mb-4">
+                <div class="card">
+                    <!--Card image-->
+                    <!-- <div class="view overlay">
+
+                        <img src="#" class="card-img-top"
+                             alt="">
+                        <a asp-action="BlogDetail" asp-controller="Blog" asp-route-articleId="Blog">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>-->
+                    <div class="card-header">
+                        <h5><b>Yazar</b></h5>
+                    </div>
+                    <!--Card content-->
+                    <div class="card-body">
+                        <!--Title-->
+                        <h4 class="card-title">@Model.ArticleAll.Admin.Name&nbsp;@Model.ArticleAll.Admin.Lastname</h4>
+                        <!--Text-->
+                        <h6 class="text-muted">@Model.ArticleAll.Admin.About</h6>
+                        <p class="card-text">
+                            @foreach (var item in Model.ArticleAll.SocialMedias)
+                            {
+                                <a class="button button-xs button-outline button-danger" style="margin-right:5px;" id="@item.Id" href="@item.Link">
+                                    <i class="@item.LogoClass"></i>
+                                </a>
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <h3>Yorumlar</h3><hr />
+        <ul class="timeline-comments">
+            <li class="timeline-comment">
+                @for (int i = 0; i < Model.ArticleAll.allComments.Count; i++)
+                {
+                    <div class="timeline-comment-wrapper">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-center">
+                                <a href="#" class="d-flex align-items-center">
+                                    <img class="rounded-circle" src="~/img/profile.png" alt="avatar" />
+                                    <h5>@Model.ArticleAll.allComments[i].Name</h5>
+                                </a>
+                                <div class="comment-date" data-toggle="tooltip" title="@Model.ArticleAll.allComments[i].CommentDate.ToLongDateString()" data-placement="top" data-original-title="Time">@Model.ArticleAll.allComments[i].CommentDate.ToLongDateString()</div>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">@Model.ArticleAll.allComments[i].CommentDescription</p>
+                            </div>
+                            <div class="card-footer bg-white p-2">
+                                <button type="button" id="MainReplied" name="@Model.ArticleAll.allComments[i].Id" class="btn btn-primary btn-sm float-right" onclick="tikla(this)"><span class="fa fa-reply"></span>&nbsp;Yanıtla</button>
+                                @*<small class="text-muted ml-2">Last updated 3 mins ago</small>*@
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="timeline-comments">
+                        @if (Model.ArticleAll.allComments[i].SecondLevelComments != null)
+                        {
+                            @foreach (var item in Model.ArticleAll.allComments[i].SecondLevelComments)
+                            {
+                                <li class="timeline-comment">
+                                    <div class="timeline-comment-wrapper">
+                                        <div class="card" id="@Model.ArticleAll.allComments[i].Id">
+                                            <div class="card-header d-flex align-items-center">
+                                                @*<div class="ribbon"><span>admin</span></div>*@
+                                                <a href="#" class="d-flex align-items-center">
+                                                    <img class="rounded-circle" src="~/img/profile.png" alt="avatar" />
+                                                    <h5>@item.Name</h5>
+                                                </a>
+                                                <div class="comment-date" data-toggle="tooltip" title="@item.CommentDate.ToLongDateString()" data-placement="top" data-original-title="Time">@item.CommentDate.ToLongDateString()</div>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="card-text">@item.CommentDescription</p>
+                                            </div>
+                                            <div class="card-footer bg-white p-2">
+                                                <button type="button" id="SubReplied" name="@Model.ArticleAll.allComments[i].Id" class="btn btn-outline-primary btn-sm float-right" onclick="tikla(this)"><span class="fa fa-reply"></span>&nbsp;Yanıtla</button>
+                                                @*<small class="text-muted ml-2">Last updated 3 mins ago</small>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ul>
+                }
+            </li>
+        </ul>
+        <br />
+        <hr />
+        <h5>Yorum Yaz</h5><br />
+        <form>
+            <div class="form-group">
+                <input type="email" class="form-control" id="commentMail" placeholder="E-Mail Giriniz..." required />
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="commentName" placeholder="Ad Soyad Giriniz..." required />
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" id="commentDescription" placeholder="Yorumunuz..." rows="10" required></textarea>
+            </div>
+            <button type="button" id="CommentBtn" class="btn btn-outline-success float-right"><span class="fa fa-share-square"></span>&nbsp;Gönder</button>
+        </form>
+    </div>
+</div>
+@section BlogDetailScripts
+{
+    <script>
+        var btnid = "";
+        var commentId = "";
+        var whom = "";
+        function tikla(btn) {
+            btnid = btn.id;
+            commentId = btn.name;
+            //alert(commentId);
+            whom = $(btn).parent().parent().children().find('h5').html();
+            var $target = $('html,body');
+            $target.animate({ scrollTop: $target.height() }, 1000);
+            $('#commentDescription').html("#" + whom);
+        }
+        $('#CommentBtn').click(function () {
+            var email = $('#commentMail').val();
+            var name = $('#commentName').val();
+           // alert(btnid);
+           // alert(commentId);
+            var descp = $('#commentDescription').val();
+            if (btnid == "MainReplied")
+            {
+
+                 $.ajax({
+                type: "GET",
+                url: "/Blog/AddSubComment",
+                data: { Name : name, Email:email, CommentDescription:descp,CommentId:commentId},
+                dataType: 'json',
+                     success: function (data)
+                     {
+                        swal({
+                        //title: "Silmek İstediğinize Emin Misiniz ?",
+                        text: "Yorumunuz için teşekkür ederiz.",
+                        icon: "success",
+                        buttons: true,
+                       // dangerMode: true,
+                        })
+                     }
+                 });
+                Clear();
+            }
+            if (btnid == "SubReplied")
+            {
+                $.ajax({
+                    type: "GET",
+                    url: "/Blog/AddSubComment",
+                    data: { Name: name, Email: email, CommentDescription: descp, CommentId: commentId },
+                    dataType: 'json',
+                    success: function (data) {
+                        swal({
+                            //title: "Silmek İstediğinize Emin Misiniz ?",
+                            text: "Yorumunuz için teşekkür ederiz.",
+                            icon: "success",
+                            buttons: true,
+                            // dangerMode: true,
+                        })
+                    }
+                });
+                Clear();
+            }
+            if (btnid == "")
+            {
+                 $.ajax({
+                type: "GET",
+                url: "/Blog/AddComment",
+                data: { Name : name, Email:email, CommentDescription:descp,ArticleId:@Model.ArticleAll.Article.Id },
+                dataType: 'json',
+                success: function (data) {
+                    swal({
+                        //title: "Silmek İstediğinize Emin Misiniz ?",
+                        text: "Yorumunuz için teşekkür ederiz.",
+                        icon: "success",
+                        buttons: true,
+                       // dangerMode: true,
+                    })
+                }
+                 });
+                Clear();
+            }
+
+
+        });
+        function Clear()
+        {
+
+
+            location.reload();
+        }
+    </script>
+
+
+}
+
+

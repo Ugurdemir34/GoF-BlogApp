@@ -1,0 +1,87 @@
+﻿@model GoF.Lib.MvcWebUI.Models.TagListViewModel
+@{
+    ViewData["Title"] = "Tags";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<p>&nbsp;</p>
+
+
+<table class="table table-bordered data-table data-table-default" id="tagTable">
+    <thead>
+    <th>
+        ID
+    </th>
+    <th>
+        Tag Adi
+    </th>
+    <th>
+    </th>
+    <th>
+    </th>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.Tags)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.TagName</td>
+                <td>
+                    <button role="button" class="btn button-lg btn-outline-danger" id="@item.Id"><i class="fa fa-trash-o"></i><span class="sr-only"></span>&nbsp;Sil</button>
+                    <a role="button" asp-action="tagEdit" asp-controller="Admin" asp-route-tagId="@item.Id" class="btn button-lg btn-outline-warning " id="@item.Id"><i class="fa fa-pencil-square-o"></i><span class="sr-only"></span>&nbsp;Düzenle</a>
+                </td>
+            </tr>
+        }
+        <!-- Modal -->
+    </tbody>
+</table>
+@section TagScripts
+{
+    <script>
+        $(document).ready(function () {
+            // Fill modal with content from link href
+            $("#tagTable tbody").on("click",'.btn-outline-danger', function (e) {
+                var id = this.id;
+                console.log(id);
+                var data_table = $('#tagTable tbody');
+                var row = $(this).parent().parent();
+
+                swal({
+                    title: "Silmek İstediğinize Emin Misiniz ?",
+                    text: "Bu işlem geri alınamaz !",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                type: "GET",
+                                url: "/Admin/TagDelete?tagId=" + id,
+                                dataType: 'json',
+                                success: function (data) {
+                                    swal("İşlem Başarılı !", "Kayıt Başarıyla Silindi", "success");
+                                    row.fadeOut(1000, function () {
+                                    });
+
+
+
+                                }
+                            });
+                        } else {
+                            swal("Bu veri korundu !");
+                        }
+                    });
+
+
+
+
+            });
+
+        })
+    </script>
+}
+
+
+

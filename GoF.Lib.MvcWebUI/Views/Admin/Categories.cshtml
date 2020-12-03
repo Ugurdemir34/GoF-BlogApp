@@ -1,0 +1,80 @@
+﻿@model GoF.Lib.MvcWebUI.Models.CategoryListViewModel
+@{
+    ViewData["Title"] = "Categories";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<p>&nbsp;</p>
+
+
+<table class="table table-bordered data-table data-table-default" id="categoryTable">
+    <thead>
+    <th>
+        ID
+    </th>
+    <th>
+        Kategori Adi
+    </th>
+    <th>
+    </th>
+    <th>
+    </th>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.Categories)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+                <td>
+                    <button role="button" class="btn button-lg btn-outline-danger" id="@item.Id"><i class="fa fa-trash-o"></i><span class="sr-only"></span>&nbsp;Sil</button>
+                    <a role="button" asp-action="categoryEdit" asp-controller="Admin" asp-route-categoryId="@item.Id" class="btn button-lg btn-outline-warning " id="@item.Id"><i class="fa fa-pencil-square-o"></i><span class="sr-only"></span>&nbsp;Düzenle</a>
+                </td>
+            </tr>
+        }
+
+
+        <!-- Modal -->
+
+    </tbody>
+</table>
+
+@section CategoryScripts
+{
+    <script>
+        $(document).ready(function () {
+            // Fill modal with content from link href
+            $("#categoryTable tbody").on("click",'.btn-outline-danger', function (e) {
+                var id = this.id;
+                console.log(id);
+                var data_table = $('#categoryTable tbody');
+                var row = $(this).parent().parent();
+
+                swal({
+                    title: "Silmek İstediğinize Emin Misiniz ?",
+                    text: "Bu işlem geri alınamaz !",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                type: "GET",
+                                url: "/Admin/CategoryDelete?categoryId=" + id,
+                                dataType: 'json',
+                                success: function (data) {
+                                    swal("İşlem Başarılı !", "Kayıt Başarıyla Silindi", "success");
+                                    row.fadeOut(1000, function () {
+                                    });
+                                }
+                            });
+                        } else {
+                            swal("Bu veri korundu !");
+                        }
+                    });
+            });
+        })
+    </script>
+}

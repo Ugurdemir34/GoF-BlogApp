@@ -1,0 +1,107 @@
+﻿@model GoF.Lib.MvcWebUI.Models.QuestionViewModel
+@{
+    ViewData["Title"] = "Questions";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model.Questions)
+        {
+
+            string classValue = "";
+            TimeSpan diff = DateTime.Now - item.QuestionDate;
+            int dayDifference = (int)Math.Abs(Math.Round(diff.TotalDays)) - 1;
+
+            if (dayDifference >=-1 && dayDifference <= 7)
+            {
+                classValue = "background-color:#428BFA";
+            }
+            else if (dayDifference >= 8 && dayDifference <= 14)
+            {
+                classValue = "background-color:#128C7E";
+            }
+            else
+            {
+                classValue = "background-color:#EE1D23";
+            }
+            
+            <div class="card text-white mb-3 ml-25" style="width: 18rem;cursor:pointer;@classValue" id="QuestionCard">
+                <button type="button" class="close text-right mr-10 text-white" aria-label="Close" id="@item.QuestionId">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                @{
+
+                    var content = item.QuestionContent.Length > 25
+                         ? item.QuestionContent.Substring(0, 24) + "..."
+                         : item.QuestionContent;
+                }
+
+                <div class="card-body">
+                    <h3 class="card-title">@item.QuestionSubject</h3>
+                    <h6 class="card-subtitle mb-2 text-warning">@item.CategoryName</h6>
+                    <p class="card-text">@content</p><br />
+
+
+                    @*<a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>*@
+                </div>
+                <div class="card-footer">                
+                    @*@if (dayDifference == 0)
+                    {
+                        <p style="color:black">Bugün Soruldu</p>
+                    }
+                    else if (dayDifference == 1)
+                    {
+                        <p style="color:black">Dün Soruldu</p>
+                    }
+                    else
+                    {
+                        <p style="color:black">@dayDifference Gün Önce Soruldu</p>
+                    }*@
+
+                    <p style="color:black">@item.QuestionDate.ToLongDateString()</p>
+                </div>
+            </div>
+
+
+
+        }
+    </div>
+</div>
+@section QuestionScripts
+{
+    <script>
+        $(document).ready(function () {
+            // Fill modal with content from link href
+            $(".close").on("click", function (e) {
+                var id = this.id;
+                console.log(id);
+                var row = $(this).parent();
+                swal({
+                    title: "Silmek İstediğinize Emin Misiniz ?",
+                    text: "Bu işlem geri alınamaz !",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                type: "GET",
+                                url: "/Admin/QuestionDelete?questionId=" + id,
+                                dataType: 'json',
+                                success: function (data) {
+                                    swal("İşlem Başarılı !", "Kayıt Başarıyla Silindi", "success");
+                                    row.fadeOut(1000, function () {
+                                    });
+                                }
+                            });
+                        } else {
+                            swal("Bu veri korundu !");
+                        }
+                    });
+            });
+        })
+    </script>
+}

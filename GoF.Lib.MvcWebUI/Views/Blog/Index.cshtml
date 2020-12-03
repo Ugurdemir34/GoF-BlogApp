@@ -1,0 +1,81 @@
+﻿@model GoF.Lib.MvcWebUI.Models.ArticleListViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+
+
+<div class="col-9">
+    <h2>@ViewData["Name"]</h2>
+    <hr class="mb-5" />
+
+    @if (Model.Articles.Count() == 0)
+    {
+        <section class="text-center">
+            <img src="~/img/404.png" style="width:75%;" />
+        </section>
+
+    }
+    else
+    {
+        <div class="row mb-4 wow fadeIn">
+            <div class="card-columns">
+                @foreach (var item in Model.Articles)
+                {
+                 
+                        <div class="card rounded">
+
+                            @{
+                                var base64 = Convert.ToBase64String(item.Thumbnail);
+                                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            }
+
+
+                            <!--Card image-->
+                            <div class="view overlay">
+
+                                <img src="@imgSrc" class="card-img-top">
+                                <a asp-action="BlogDetail" asp-controller="Blog" asp-route-id="@item.ArticleId">
+                                    <div class="mask rgba-white-slight"></div>
+                                </a>
+                            </div>
+
+                            <!--Card content-->
+                            <div class="card-body">
+                                <!--Title-->
+                                <h4 class="card-title">@item.ArticleTitle</h4>
+                                <!--Text-->
+
+                                <a asp-action="Index" asp-controller="Blog" asp-route-categoryName="@item.CategoryName">
+                                    <p class="card-text">@item.CategoryName</p>
+                                </a>
+                                <br />
+
+
+
+                                <section class="text-center">
+                                    <a asp-action="BlogDetail" asp-controller="Blog" asp-route-id="@item.ArticleId" class="btn btn-primary btn-md">
+                                        Makaleyi Oku
+                                        <i class="fas fa-play ml-2"></i>
+                                    </a>
+                                </section>
+                                <hr class="mt-3" />
+                                <h6 class="card-text float-right">@item.PublishDate.ToShortDateString()</h6>
+
+                                <h6 class="card-text"><i class="fas fa-eye "></i>&nbsp;@item.Views</h6>
+
+
+                            </div>
+
+                        </div>
+                  
+                }
+
+            </div>
+        </div>
+    }
+    <!--Grid row-->
+
+
+</div>

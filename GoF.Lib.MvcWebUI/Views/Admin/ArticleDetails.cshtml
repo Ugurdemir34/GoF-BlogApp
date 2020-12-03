@@ -1,0 +1,52 @@
+﻿@model GoF.Lib.MvcWebUI.Models.ArticleAndTagsViewModel
+@{
+    ViewData["Title"] = "Articles";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+    <table class="table table-bordered data-table data-table-default">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Başlık</th>
+                <th>Kategori</th>
+                <th>Görüntülenme</th>
+                <th>Yayım Tarihi</th>
+                <th>Yazar</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+              <td>@Model.Complex.Article.Id</td>
+              <td>@Model.Complex.Article.ArticleTitle</td>
+              <td>@Model.Complex.Article.Category.Name</td>
+              <td>@Model.Complex.Article.Views</td>
+              <td>@Model.Complex.Article.PublishDate</td>
+              <td>@Model.Complex.Article.Admin.Name</td>
+            </tr>
+          
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Id</th>
+                <th>Başlık</th>
+                <th>Kategori</th>
+                <th>Görüntülenme</th>
+                <th>Yayım Tarihi</th>
+                <th>Yazar</th>
+            </tr>
+        </tfoot>
+    </table>
+<script>
+    $('.data-table-default').DataTable({
+        responsive: true,
+        language: {
+            paginate: {
+                previous: '',
+                next: ''
+            }
+        }
+    });
+</script>

@@ -1,0 +1,178 @@
+﻿@model GoF.Lib.MvcWebUI.Models.ArticleAndTagsViewModel
+@{
+    ViewData["Title"] = "ArticleEdit";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<form asp-action="ArticleEdit" asp-controller="Admin" method="post" enctype="multipart/form-data">
+    <div class="col-12 mb-30">
+        <div class="box">
+            <div class="box-head">
+                <h3 class="title">Makale Düzenle</h3>
+            </div>
+            <div class="box-body">
+                <div class="row mbn-20">
+                    <div class="row mbn-15">
+                        @if (Model.Complex.Article.Id == 0)
+                        {
+                            <input type="hidden" id="0" value="0" />
+                        }
+                        else
+                        {
+                            <input type="hidden" asp-for="@Model.Complex.Article.Id" id="@Model.Complex.Article.Id" />
+                        }
+
+                        <div class="col-4 mb-15">
+
+                            <label asp-for="@Model.Complex.Article.ArticleTitle"></label>
+                            <input type="text" class="form-control" placeholder="Makale Başlığı" asp-for="@Model.Complex.Article.ArticleTitle">
+                        </div>
+                        <div class="col-4 mb-15">
+                            <div class="form-group">
+                                <label asp-for="@Model.FormFiles" class="control-label">Makale Thumbnail</label>
+                                <input type="file" asp-items="@Model.FormFiles" name="formFiles" class="dropify" multiple data-show-upload="true" data-height="85" />
+                            </div>
+                        </div>
+                        <div class="col-4 mb-15">
+                            <label asp-for="@Model.Complex.Article.PublishDate"></label>
+                            <input type="text" class="form-control" placeholder="Yayım Tarihi" asp-for="@Model.Complex.Article.PublishDate">
+                        </div>
+                        <div class="col-4 mb-15">
+                            <label asp-for="@Model.Author" class="control-label"></label>
+                            <select class="form-control" id="drpcategories" asp-for="@Model.Complex.Article.AdminId" asp-items="@Model.Author">
+                                <option disabled selected value="-1">Choose</option>
+                            </select>
+                        </div>
+                        <div class="col-4 mb-15">
+                            <label asp-for="@Model.Complex.Article.Views"></label>
+                            <input type="text" class="form-control" placeholder="Görüntülenme" asp-for="@Model.Complex.Article.Views">
+                        </div>
+                        <div class="col-4 mb-15">
+                            <label asp-for="@Model.Complex.Article.ArticleTitle" class="control-label"></label>
+                            <select class="form-control" id="drpcategories" asp-for="@Model.Complex.Article.CategoryId" asp-items="@Model.Categories">
+                                <option disabled selected value="-1">Choose</option>
+                            </select>
+                        </div>
+                        <div class="col-4 mb-15">
+                            <span>Tagler<br /></span>
+                            <button type="button" class="button button-box button-outline button-success" id="openTags" data-toggle="modal" data-target="#tagModal"><i class="zmdi zmdi-plus-circle-o"></i></button><br />
+                            <div style="height:100px" class="overflow-auto" id="tagListDiv">
+
+                                @foreach (var item in Model.Complex.Tags)
+                                {
+                                    <a class="button button-xs button-outline button-danger" style="margin-right:5px;" id="@item.Id">
+                                        <i class="zmdi zmdi-close-circle-o"></i><span>@item.TagName</span>
+                                    </a>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-4 mb-15">
+                            <label>&nbsp</label>
+                            <button class="btn btn-success" type="submit">
+                                Kaydet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <textarea class="summernote" asp-for="@Model.Complex.Article.ArticleContent"></textarea>
+            </div>
+            <div class="modal fade" id="tagModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts
+{
+    <script>
+
+        $('.summernote').summernote({
+            height: this.scrollHeight,
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            // Fill modal with content from link href
+            $("#tagListDiv").on("click", ".button.button-xs.button-outline.button-danger", function (e) {
+
+                var id = $(this).attr('id');
+                var danger = $(this);
+                var articleId = $('input[type=hidden]').val();
+                console.log("articleId=" + articleId + " tagId = " + id);
+                $.ajax({
+                    type: "GET",
+                    url: "/Admin/DeleteArticleTag?tagId=" + id + "&articleId=" + articleId,
+                    dataType: 'json',
+                    success: function (data) {
+                        danger.fadeOut();
+                    }
+                });
+            });
+        })
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            // Fill modal with content from link href
+            $("#openTags").on("click", function (e) {
+
+                var articleId = $('input[type=hidden]').val();
+                var mymodal = $('#tagModal');
+                var html = '';
+                console.log(articleId);
+                $.ajax({
+                    type: "GET",
+                    url: "/Admin/GetDifferentTags?articleId=" + articleId,
+                    dataType: 'json',
+                    success: function (data) {
+                        for (let i = 0; i < data.length; i++) {
+                            html += "<button type='button' class='btn btn-outline-warning' style='margin:10px' onclick='addArticleTag(" + data[i].id + ")' id=" + data[i].id + ">" + data[i].tagName + "</button>"
+                        }
+                        mymodal.find('.modal-title').text('Tag Listesi');
+                        mymodal.find('.modal-body').html(html);
+                        mymodal.modal('show');
+                        //console.log(data.tags[0].tagName);
+
+                    }
+                });
+            });
+        })
+    </script>
+    <script>
+        function addArticleTag(tag) {
+            var getDiv = $("#tagListDiv");
+            var newHtml = '';
+            var articleId = $('input[type=hidden]').val();
+            $.ajax({
+                type: "GET",
+                url: "/Admin/addArticleTag?tagId=" + tag + "&articleId=" + articleId,
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data.id);
+                    console.log(data.tagName);
+                    newHtml = "<a class='button button-xs button-outline button-danger' style='margin-right:5px' id=" + data.id + "><i class='zmdi zmdi-close-circle-o'></i><span>" + data.tagName + "</span></a>";
+                    getDiv.append(newHtml);
+                    $("#tagModal .close").click()
+                }
+            });
+        }
+    </script>
+}

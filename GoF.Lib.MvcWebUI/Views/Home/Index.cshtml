@@ -1,0 +1,84 @@
+﻿@model GoF.Lib.MvcWebUI.Models.ArticleListViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+<div class="col-9 ">
+    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            @{
+                int sliderCounter = 0;
+                int carouselItemCounter = 0;
+                string activeClass = "";
+            }
+            @foreach (var item in Model.Articles)
+            {
+                <li data-target="#carouselExampleCaptions" data-slide-to="@sliderCounter"></li>
+                sliderCounter++;
+            }
+        </ol>
+        <div class="carousel-inner">
+
+            @foreach (var item in Model.Articles)
+            {
+                activeClass = carouselItemCounter == 0 ? "active" : "";
+                var base64 = Convert.ToBase64String(item.Thumbnail);
+                var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                <div class="carousel-item @activeClass">
+                    <a asp-action="BlogDetail" asp-controller="Blog" asp-route-id="@item.ArticleId">
+                        <img src="@imgSrc" class="d-block w-100 " style="height:25rem" alt="...">
+                    </a>
+                    <div class="carousel-caption d-none d-md-block bg-light w-100 text-dark font-weight-bold" style="left:0;bottom:0">
+                        <h5>@item.ArticleTitle</h5>
+                        <p>@item.CategoryName</p>
+                    </div>
+                </div>
+                carouselItemCounter++;
+            }
+        </div>
+    
+
+
+        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <hr class="my-5" />
+    <h3>En Son Eklenenler</h3>
+    <section class="text-center">
+        <div class="mb-4 wow fadeIn">
+            <div class="card-deck">
+               
+                    @foreach (var item in Model.Articles)
+                    {
+                        var base64 = Convert.ToBase64String(item.Thumbnail);
+                        var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                        <div class="card">
+                            <div class="view overlay">
+                                <img src="@imgSrc" class="card-img-top"
+                                     alt="">
+                                <a asp-action="BlogDetail" asp-controller="Blog" asp-route-id="@item.ArticleId" target="_blank">
+                                    <div class="mask rgba-white-slight"></div>
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">@item.ArticleTitle</h4>
+                                <p class="card-text">@item.CategoryName </p>
+                                <a asp-action="BlogDetail" asp-controller="Blog" asp-route-id="@item.ArticleId" target="_blank" class="btn btn-primary btn-md">
+                                    Oku
+                                    <i class="fas fa-book ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    }
+
+               
+            </div>
+        </div>
+    </section>
+</div>

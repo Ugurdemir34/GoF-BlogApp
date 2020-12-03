@@ -1,0 +1,69 @@
+﻿@model GoF.Lib.MvcWebUI.Models.QuestionViewModel
+@{
+    ViewData["Title"] = "Question";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="container">
+
+    <div class="row">
+        <div class="col-4">
+
+         
+            <div class="card" style="width: 18rem;">
+               <div class="card-header">
+                   <h3>Kafana takılanı sormak ister misin ?</h3>
+               </div>
+                <div class="card-body">
+                    <h5 class="card-title"></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Yapman Gereken</h6>
+                    <p class="card-text">Yanda bulunan formu doldur, en kısa zamanda cevap sana ulaşsın.</p>
+
+                </div>
+            </div>
+            <!-- end s-content__header -->
+            @*<div class="s-content__media col-full">
+            <div class="s-content__post-thumb">
+                <img src="~/images/thumbs/about/about-1000.jpg"
+                     srcset="~/images/thumbs/about/about-2000.jpg 2000w,
+                                 ~/images/thumbs/about/about-1000.jpg 1000w,
+                                 ~/images/thumbs/about/about-500.jpg 500w"
+                     sizes="(max-width: 2000px) 100vw, 2000px" alt="">
+            </div>
+        </div>*@ <!-- end s-content__media -->
+
+        </div>
+        <div class="col-8">
+
+            <form asp-controller="Home" asp-action="Question">
+                <div class="form-group">
+                    <label asp-for="@Model.Question.Name">Adınız</label>
+                    <input class="form-control" type="text" asp-for="@Model.Question.Name">
+
+                    <label asp-for="@Model.Question.Lastname">Soyadınız</label>
+                    <input class="form-control" type="text" asp-for="@Model.Question.Lastname">
+
+                    <label asp-for="@Model.Question.Mail">E-mailiniz</label>
+                    <input class="form-control" type="email" asp-for="@Model.Question.Mail">
+
+                    <label asp-for="@Model.Question.QuestionSubject">Konu Başlığı</label>
+                    <input class="form-control" type="text" asp-for="@Model.Question.QuestionSubject">
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label for="field-2" class="control-label">Kategori</label>
+                        <select class="form-control" id="drpCategories" asp-for="@Model.Question.CategoryId" asp-items="@Model.Categories">
+                            <option disabled selected value="-1">Choose</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label for="exampleMessage">İçerik</label>
+                    <textarea class="form-control" placeholder="Your message" asp-for="@Model.Question.QuestionContent"></textarea>
+                </div>
+                <input class="btn-primary form-control w-25 float-right" type="submit" value="Gönder">
+            </form>
+        </div>
+    </div> <!-- end row -->
+</section> <!-- s-content -->

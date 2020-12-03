@@ -1,0 +1,79 @@
+﻿@model GoF.Lib.MvcWebUI.Models.AddAdministratorViewModel
+@{
+    ViewData["Title"] = "AddAdministrator";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+
+<form asp-action="AddAdministrator" asp-controller="Admin" method="post" enctype="multipart/form-data">
+    <div class="col-12 mb-30">
+        <div class="box">
+            <div class="box-head">
+                <h3 class="title">Admin Ekle</h3>
+            </div>
+            <div class="box-body">
+                <div class="row mbn-20">
+                    <div class="row mbn-15">
+
+                        <div class="col-4 mb-15">
+
+                            <label asp-for="@Model.Name"></label>
+                            <input type="text" class="form-control" placeholder="İsim" asp-for="@Model.Name">
+                        </div>
+                        <div class="col-4 mb-15">
+
+                            <label asp-for="@Model.Lastname"></label>
+                            <input type="text" class="form-control" placeholder="Soyisim" asp-for="@Model.Lastname">
+                        </div>
+                        <div class="col-4 mb-15">
+
+                            <label asp-for="@Model.Username"></label>
+                            <input type="text" class="form-control" placeholder="Kullanıcı Adı" asp-for="@Model.Username">
+                        </div>
+                        <div class="col-4 mb-15">
+
+                            <label asp-for="@Model.Email"></label>
+                            <input type="email" class="form-control" placeholder="Email" asp-for="@Model.Email">
+                        </div>
+                        <div class="col-4 mb-15">
+                            <label asp-for="@Model.Password"></label>
+                            <input type="password" class="form-control" placeholder="Parola" asp-for="@Model.Password">
+                        </div>
+
+                        <div class="col-12 mb-15">
+                            <label asp-for="@Model.About">Hakkında</label>
+                            <textarea style="height:500px; width:100%;background-color:#202334;color:white;border-color:black" asp-for="@Model.About"></textarea>
+                        </div>
+                        <div class="col-12 mb-15">
+                            <label>&nbsp</label>
+                            <button class="btn btn-success float-right" type="submit">
+                                Kaydet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal fade" id="tagModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,37 @@
+﻿@model GoF.Lib.MvcWebUI.Models.CategoryEditViewModel
+@{
+    ViewData["Title"] = "CategoryEd,t";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<form asp-action="CategoryEdit" asp-controller="Admin" method="post">
+    <div class="col-12 mb-30">
+        <div class="box">
+            <div class="box-head">
+                <h3 class="title">Kategori Düzenle</h3>
+            </div>
+            <div class="box-body">
+                <div class="row mbn-20">
+                    <div class="row mbn-15">
+                      
+                            <input type="hidden" asp-for="@Model.Id" id="@Model.Id" />
+                       
+
+                        <div class="col-8 mb-15">
+
+                            <label>Kategori Adı</label>
+                            <input type="text" class="form-control" placeholder="Makale Başlığı" asp-for="@Model.CategoryName">
+                        </div>
+                       
+                        <div class="col-4 mb-15">
+                            <label>&nbsp</label>
+                            <button class="btn btn-success" type="submit">
+                                Kaydet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>                      
+        </div>
+    </div>
+</form>

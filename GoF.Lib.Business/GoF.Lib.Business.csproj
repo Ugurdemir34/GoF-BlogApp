@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GoF.Core\GoF.Core.csproj" />
+    <ProjectReference Include="..\GoF.Lib.DataAccess\GoF.Lib.DataAccess.csproj" />
+    <ProjectReference Include="..\GoF.Lib.Entities\GoF.Lib.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

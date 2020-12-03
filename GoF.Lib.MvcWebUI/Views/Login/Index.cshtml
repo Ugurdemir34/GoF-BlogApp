@@ -1,0 +1,71 @@
+﻿@using System.Threading.Tasks
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@model GoF.Lib.MvcWebUI.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    var returnUrl = Context.Request.Query["returnUrl"];
+}
+@*<div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100 p-b-160 p-t-50">
+                <form class="login100-form validate-form" method="post" asp-action="Index" asp-controller="Login" asp-route-returnUrl="@returnUrl">
+                    <span class="login100-form-title p-b-43">
+                       ADMIN PANELİ
+                    </span>
+
+                    <div class="wrap-input100 rs1 validate-input" data-validate="Username is required">
+                        <input class="input100" type="text" asp-for="@Model.UserName" placeholder="Kullanıcı Adı">
+
+                    </div>
+
+
+                    <div class="wrap-input100 rs2 validate-input" data-validate="Password is required">
+                        <input class="input100" type="password" asp-for="@Model.Password" placeholder="Parola">
+
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn">
+                            Giriş Yap
+                        </button>
+                    </div>
+
+                    <div class="text-center w-full p-t-23">
+                        <a href="#" class="txt1">
+                            Forgot password?
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>*@
+
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+        <!-- Icon -->
+        <div class="fadeIn first">
+            <img src="~/img/profile.png" id="icon" alt="User Icon" />
+        </div>
+
+        <!-- Login Form -->
+        <form method="post" asp-action="Index" asp-controller="Login">
+            <input type="email" id="login" asp-for="@Model.Email" class="fadeIn second" placeholder="E-Posta">
+            <input type="password" id="password" asp-for="@Model.Password" class="fadeIn third" placeholder="Parola">
+            <input type="submit" class="fadeIn fourth" value="Giriş Yap">
+            <br />
+            <p style="color:red">@ViewData["mesaj"]</p><br />
+            
+        </form>
+        <a role="button" asp-controller="Login" asp-action="Register" class="btn btn-primary">Kayıt Ol</a>
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+            <a class="underlineHover" asp-action="AccountRecovery" asp-controller="Login">Şifremi Unuttum</a>
+        </div>
+
+    </div>
+</div>

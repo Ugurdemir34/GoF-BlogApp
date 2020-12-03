@@ -1,0 +1,34 @@
+﻿@model GoF.Lib.MvcWebUI.Models.CategoryListViewModel
+@{
+    Layout = null;
+}
+<!-- <ul class="list-group" style="width:75%">
+
+ </ul>
+    -->
+<h4 class="text-center">Kategoriler</h4>
+<ul class="list-group list-group-flush">
+    @foreach (var item in Model.CategoryArticleInfo)
+    {
+        <a asp-action="Index" asp-controller="Blog" asp-route-categoryName="@item.Key">
+            @{
+                string active = "";
+                string style = "";
+                if (ViewData["Name"]?.ToString() == item.Key.ToString())
+                {
+                    active = "text-primary";
+                    style = "background:#e4e3e3;";
+                }
+                else
+                {
+                    active = "text-black";
+                    style = "background-color:#3b6978";
+                }
+                <li class="list-group-item customEffect grow justify-content-between wow fadeIn  align-items-center mt-1 rounded @active" style="@style">
+                    <b style="color:#ffffff">@item.Key</b>
+                    <span class="badge badge-pill float-right" style="background-color: #790c5a">@item.Value</span>
+                </li>
+            }
+        </a>
+    }
+</ul>
