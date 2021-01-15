@@ -4,7 +4,7 @@ API tarafı henüz yazılmamıştır.
 
 ## Ekran Görüntüleri
 
-*İçerik alıntıdır ! .*
+*İçerikler alıntıdır ! .*
 
 ![ss1](https://user-images.githubusercontent.com/42480609/104752802-30179800-5768-11eb-8c3c-0235e0595fca.png)
 ![ss2](https://user-images.githubusercontent.com/42480609/104752796-2db53e00-5768-11eb-9a34-36af7721c74c.png)
